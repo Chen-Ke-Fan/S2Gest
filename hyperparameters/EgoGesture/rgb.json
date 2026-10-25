@@ -1,0 +1,103 @@
+{
+    "name": "Gesture Recognition",
+    "dataset": "EgoGesture",
+    "seed": 1994,
+    "epochs": 100,
+    "phase": "train",
+    "sync_bn": false,
+    "data": {
+      "optical_flow": false,
+      "type": "rgb",
+      "n_classes": 83,
+      "n_frames": 40,
+      "data_path": "./data",
+      "batch_size": 2,
+      "workers": 4
+    },
+    "checkpoints": {
+      "save_policy": "best",
+      "early_stop": 20,
+      "save_iters": 30,
+      "save_dir": "./outputs"
+    },
+    "solver": {
+      "type": "AdamW",
+      "weight_decay": 0.05,
+      "base_lr": 5e-05,
+
+      "lr_policy": "MultiStepLR",
+      "decay_steps": [50, 80],
+      "gamma": 0.5,
+      "t_max": 100,
+      "eta_min": 1e-6,
+      "warmup_epochs": 5
+    },
+    "network": {
+      "pretrained": "./pretrained/s2gest_small_jester_rgb.pth",
+      "model_size": "small",
+      "drop_path_rate": 0.1,
+      "classifier_dropout": 0.1,
+      "model_configs": {
+        "nano": {
+            "mamba_dim": 64,
+            "mamba_depth": 2,
+            "mamba_d_state": 16,
+            "mamba_d_conv": 4,
+            "mamba_expand": 2,
+
+            "c1a": 16, "c2b": 16, "c2c": 48,
+            "m3b": [16, 24, 32, 4, 8, 8],
+            "m3c": [32, 32, 48, 8, 24, 16],
+            "m4b": [48, 24, 52, 4, 12, 16],
+            "m4c": [40, 28, 56, 6, 16, 16],
+            "m5b": [64, 40, 80, 8, 32, 32],
+            "m5c": [96, 48, 96, 12, 32, 32]
+        },
+        "tiny": {
+            "mamba_dim": 128,
+            "mamba_depth": 2,
+            "mamba_d_state": 16,
+            "mamba_d_conv": 4,
+            "mamba_expand": 2,
+
+            "c1a": 16, "c2b": 16, "c2c": 48,
+            "m3b": [16, 24, 32, 4, 8, 8],
+            "m3c": [32, 32, 48, 8, 24, 16],
+            "m4b": [48, 24, 52, 4, 12, 16],
+            "m4c": [40, 28, 56, 6, 16, 16],
+            "m5b": [64, 40, 80, 8, 32, 32],
+            "m5c": [96, 48, 96, 12, 32, 32]
+        },
+        "small": {
+            "mamba_dim": 128,
+            "mamba_depth": 2,
+            "mamba_d_state": 16,
+            "mamba_d_conv": 4,
+            "mamba_expand": 2,
+
+            "c1a": 32, "c2b": 32, "c2c": 96,
+            "m3b": [32, 48, 64, 8, 16, 16],
+            "m3c": [64, 64, 96, 16, 48, 32],
+            "m4b": [96, 48, 104, 8, 24, 32],
+            "m4c": [80, 56, 112, 12, 32, 32],
+            "m5b": [128, 80, 160, 16, 64, 64],
+            "m5c": [192, 96, 192, 24, 64, 64]
+        },
+        "base": {
+            "mamba_dim": 256,
+            "mamba_depth": 2,
+            "mamba_d_state": 16,
+            "mamba_d_conv": 4,
+            "mamba_expand": 2,
+
+            "c1a": 64, "c2b": 64, "c2c": 192,
+            "m3b": [64, 96, 128, 16, 32, 32],
+            "m3c": [128, 128, 192, 32, 96, 64],
+            "m4b": [192, 96, 208, 16, 48, 64],
+            "m4c": [160, 112, 224, 24, 64, 64],
+            "m5b": [256, 160, 320, 32, 128, 128],
+            "m5c": [384, 192, 384, 48, 128, 128]
+        }
+      }
+    }
+}
